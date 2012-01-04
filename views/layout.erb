@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" xcf"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu:400' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <title><%= @title %> :: Seedbox</title>
+    </head>
+    <body>
+        <div id="headerRow">
+            <div id="header-content">
+                <span id="title"><b>Seedbox</b></span>
+                <span id="welcome-message">Hello <b>Benjamin</b> | <a href="#">Settings</a> | <a href="#">Logout</a><br><span id="last_login">Last login: 2nd December 2011</span></span>
+            </div>
+        </div>
+        <div id="menuRow">
+            <div id="menu-content">
+                <div id="nav-menu">
+                    <ul>
+                        <li><a class="menu-selected" href="#">Dashboard</a></li>
+                        <li><a class="menu-unselected" href="info.html">Content</a></li>
+                        <li><a class="menu-unselected" href="#">Torrents</a></li>
+                    </ul>
+                    <input type="text" name="search" class="searchbox" id="search" placeholder="Search content">
+                </div>
+            </div>
+        </div>
+        
+        <div id="content">
+            <h1><%= @title %></h1>
+            
+            <%= yield %>
+        </div>
+    </body>
+</html>
