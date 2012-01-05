@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'erb'
+require './models.rb'
 
 get '/' do
   @title = 'Dashboard'
