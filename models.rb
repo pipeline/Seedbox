@@ -32,11 +32,12 @@ class Video
 
   property :id, Serial
   property :type, String
-  property :cover, String
+  property :banner, String
   property :trailer_url, String
   property :description, Text
   property :name, String
   property :rating, Float
+  property :poster, String
 end
 
 class Episode
@@ -45,6 +46,9 @@ class Episode
   property :id, Serial
   property :number, Integer
   property :season, Integer
+  property :name, String
+  property :screenshot, String
+  property :description, Text
 end
 
 class FileLocation
