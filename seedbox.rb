@@ -5,12 +5,19 @@ require 'sinatra'
 require 'erb'
 require 'json'
 require 'tvdb'
+require 'net/http'
 require './config.rb'
 require './models.rb'
 
 get '/' do
   @title = 'Dashboard'
   erb :dashboard
+end
+
+get '/content' do
+  @title = 'TV Series'
+  @series = Video.all(:type => 'Series', :order => [:name.asc])
+  erb :content
 end
 
 get '/report_files' do
@@ -69,5 +76,24 @@ def populate_series_details(series_name)
       :description => ep.overview
     )
   end
+end
+
+get '/download_banners' do
+  series = Video.all()
+  series.each do |s|
+    download_tvdb_file(s.banner)
+  end
+end
+
+def download_tvdb_file(filename)
+  public_path = File.dirname(__FILE__) + "/public/"
+  puts "Downloading #{filename} to #{public_path}"
+
+  Net::HTTP.start("thetvdb.com") { |http|
+    resp = http.get("/banners/_cache/" + filename)
+    open(public_path + filename, "wb") { |file|
+      file.write(resp.body)
+    }
+  }
 end
 
