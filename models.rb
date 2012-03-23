@@ -1,6 +1,6 @@
 require 'data_mapper'
 
-DataMapper.setup(:default, 'postgres://postgres@192.168.15.116/media')
+DataMapper.setup(:default, 'postgres://seedbox:seedbox@127.0.0.1:5432/media')
 
 DataMapper::Property::String.length(1024)
 
