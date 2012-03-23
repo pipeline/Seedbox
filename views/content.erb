@@ -1,0 +1,16 @@
+<div class="block">
+  <h2>Series</h2>
+  <div class="block-content">
+    <% even = true %>
+    <% @series.each do |series| %>
+      <table>
+        <tr class="<%= even ? "even" : "odd" %>">
+          <% even = !even %>
+          <td><img src="<%= series.banner %>"></td>
+          <td><b><%= series.name %></b><span class="rating"><%= series.rating %></span><br><span id="series_description_<%= series.id %>"><%= series.description[0..150] %></span>  <a href="#">More...</a></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>
+

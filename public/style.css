@@ -12,6 +12,15 @@ h1 {
   border-bottom: 1px solid #ACAFB0;
 }
 
+b {
+  color: #0e0f0f;
+  font-size: 11pt;
+}
+
+a {
+  color: #85a000;
+}
+
 #headerRow {
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#0e0f0f), to(#151717));
     background: -moz-linear-gradient(top, #0e0f0f, #151717);  
@@ -25,7 +34,7 @@ table {
   border: 1px solid #dee2e3;
 }
 
-#title {
+#title b {
     color:          #f6fafb;
     font-size:      24pt; 
     vertical-align: middle;
@@ -118,6 +127,10 @@ table {
   padding-top: 3px;
 }
 
+#welcome-message b {
+  color: #ACAFB0;
+}
+
 #welcome-message a {
   color: #caf200;
   text-decoration: none;
@@ -190,6 +203,11 @@ h2 {
 
 .even {
   background-color: #e6eaeb;
+}
+
+.rating {
+  float: right;
+  font-weight: bold;
 }
 
 td, th {
