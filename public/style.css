@@ -166,6 +166,7 @@ table {
   border-bottom: 1px solid #ACAFB0;
   border-left: 1px solid #ACAFB0;
   border-right: 1px solid #ACAFB0;
+  margin-top: 30px;
 }
 
 .block, .block h2 {
@@ -216,6 +217,17 @@ td, th {
 
 th {
   text-align: left;
+}
+
+.full_width_textbox {
+  float: left;
+  width: 850px;
+  margin-top: 13px;
+}
+
+input {
+  border-radius: 2px;
+  border: 1px solid #ACAFB0;
 }
 
 /* progress bars (from: http://css-tricks.com/examples/ProgressBars/) */

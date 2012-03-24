@@ -1,29 +1,12 @@
 <div class="block">
   <h2>Torrent Status</h2>
   <div class="block-content">
-    <table>
-      <tr class="even">
-        <td style="width: 100%">Source Code</td>
-        <td><div class="meter"><span style="width: 47%;"></span></div></td>
-        <td>47%</td>
-      </tr>
-      <tr class="odd">
-        <td style="width: 100%">Sons of Anarchy - Season 4</td>
-        <td><div class="meter"><span style="width: 10%;"></span></div></td>
-        <td>10%</td>
-      </tr>
-      <tr class="even">
-        <td style="width: 100%">Sucker Punch</td>
-        <td><div class="meter"><span style="width: 90%;"></span></div></td>
-        <td>90%</td>
-      </tr>
-    </table>
-    
-    <div class="button-row"><a href="#" class="button">Add</a></div>
+    <%= erb :current_torrents %>
+    <input type="text" class="full_width_textbox" placeholder="Magnet Link" id="torrent_url"></input><div class="button-row"><a href="#" class="button" onclick="add_torrent(); return false;">Add</a></div>
   </div>
 </div>
 
-<div class="block">
+<!--div class="block">
   <h2>New Content</h2>
   <div class="block-content">
     <table>
@@ -41,4 +24,12 @@
       </tr>
     </table>
   </div>
+</div-->
+
+<div class="block">
+  <h2>Feature Requests</h2>
+  <div id="feature_requests" class="block-content">
+    <%= erb :feature_requests %>
+  </div>
 </div>
+

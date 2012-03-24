@@ -1,0 +1,15 @@
+<table>
+  <% @current_torrents.each do |torrent| %>
+    <tr class="<%= cycle %>">
+      <td style="width: 100%;">
+        <%= torrent[:name] %>
+        <% if torrent[:done] %>
+          (<a href="<%= torrent[:download_url] %>">Download</a>)
+        <% end %>
+      </td>
+      <td><div class="meter"><span style="width: <%= torrent[:percent] %>%;"></span></div></td>
+      <td><%= torrent[:percent] %>%</td>
+      <td><a href="/delete_torrent?hash=<%= torrent[:hash] %>">Delete</a></td>
+    </tr>
+  <% end %>
+</table>

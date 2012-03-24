@@ -3,6 +3,7 @@ require 'data_mapper'
 DataMapper.setup(:default, 'postgres://seedbox:seedbox@127.0.0.1:5432/media')
 
 DataMapper::Property::String.length(1024)
+DataMapper::Model.raise_on_save_failure = true
 
 class Artist
   include DataMapper::Resource
@@ -66,6 +67,10 @@ class User
   property :email, String
   property :name, String
   property :hashed_password, String
+  property :admin, Boolean
+  
+  has n, :feature_requests
+  has n, :feature_request_votes
 end
 
 class Artist
@@ -90,6 +95,37 @@ end
 class Episode
   belongs_to :video
   has n, :file_locations, :through => Resource
+end
+
+class ArchivedTorrent
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :piratebay_id, Integer
+  property :name, String
+  property :size, Integer
+  property :popularity, Integer
+  property :magnet, String
+end
+
+class FeatureRequest
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :completed, Boolean
+  property :description, String
+  
+  belongs_to :user
+  has n, :feature_request_votes
+end
+
+class FeatureRequestVote
+  include DataMapper::Resource
+  
+  property :id, Serial
+  
+  belongs_to :feature_request
+  belongs_to :user
 end
 
 DataMapper.finalize

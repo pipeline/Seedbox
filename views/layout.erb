@@ -16,20 +16,23 @@
         <div id="menuRow">
             <div id="menu-content">
                 <div id="nav-menu">
-                    <ul>
+                    <!--ul>
                         <li><a class="menu-selected" href="#">Dashboard</a></li>
                         <li><a class="menu-unselected" href="info.html">Content</a></li>
                         <li><a class="menu-unselected" href="#">Torrents</a></li>
-                    </ul>
-                    <input type="text" name="search" class="searchbox" id="search" placeholder="Search content">
+                    </ul-->
+                    <input type="text" name="search" class="searchbox" id="search" placeholder="Torrent search">
                 </div>
             </div>
         </div>
         
         <div id="content">
-            <h1><%= @title %></h1>
+            <!--h1><%= @title %></h1-->
             
             <%= yield %>
         </div>
+
+      <script src="/jquery-1.7.2.min.js"></script>
+      <script src="/javascript.js"></script>
     </body>
 </html>

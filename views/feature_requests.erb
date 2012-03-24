@@ -1,0 +1,10 @@
+<table>
+  <% @feature_requests.each do |torrent| %>
+    <tr class="<%= cycle %>">
+      <td style="width: 100%;"><%= torrent[:description] %></td>
+      <% if @user.admin || torrent[:user_id] == @user.id %><td><a href="/delete_feature_request?id=<%= torrent[:id] %>">Delete</td><% end %>
+      <% if @user.admin %><td><a href="/complete_feature_request?id=<%= torrent[:id] %>">Complete</td><% end %>
+    </tr>
+  <% end %>
+</table>
+<input type="text" class="full_width_textbox" placeholder="Description" id="feature_request" onkeypress="return featureRequestEnterPressed(event);"></input><div class="button-row"><a href="#" class="button" onclick="add_feature_request(); return false;">Add</a></div>
