@@ -6,11 +6,19 @@ require 'erb'
 require 'json'
 require 'tvdb'
 require 'net/http'
+require 'digest/sha1'
 require './config.rb'
 require './models.rb'
 
+enable :sessions
+
 before do
-  @user = User.get(1)
+  path = @env['PATH_INFO']
+  if session[:user_id] == nil && path != '/user/login' && path != '/style.css' then
+    redirect '/user/login'
+  elsif session[:user_id] != nil then
+    @user = User.get(session[:user_id])
+  end
 end
 
 helpers do
@@ -40,6 +48,27 @@ get '/report_files' do
   series.each do |name|
     populate_series_details(name)
   end
+end
+
+get '/user/login' do
+  @title = 'Login'
+  erb :login
+end
+
+post '/user/login' do
+  @title = 'Login'
+  user = User.first(:email => params[:email])
+  if user.hashed_password == Digest::SHA1.hexdigest(params[:password])
+    session[:user_id] = user.id
+    redirect '/'
+  else
+    erb :login
+  end
+end
+
+get '/user/logout' do
+  session[:user_id] = nil
+  redirect '/user/login'
 end
 
 post '/add_feature_request' do

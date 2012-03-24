@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"> 
     <head>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:400' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="/style.css" />
         <title><%= @title %> :: Seedbox</title>
     </head>
     <body>
         <div id="headerRow">
             <div id="header-content">
                 <span id="title"><b>Seedbox</b></span>
-                <span id="welcome-message">Hello <b>Benjamin</b> | <a href="#">Settings</a> | <a href="#">Logout</a><br><span id="last_login">Last login: 2nd December 2011</span></span>
+                <% if @user != nil %><span id="welcome-message">Hello <b>Benjamin</b> | <a href="#">Settings</a> | <a href="/user/logout">Logout</a><br><span id="last_login">Last login: 2nd December 2011</span></span><% end %>
             </div>
         </div>
         <div id="menuRow">
@@ -21,7 +21,7 @@
                         <li><a class="menu-unselected" href="info.html">Content</a></li>
                         <li><a class="menu-unselected" href="#">Torrents</a></li>
                     </ul-->
-                    <input type="text" name="search" class="searchbox" id="search" placeholder="Torrent search">
+                    <% if @user != nil %><input type="text" name="search" class="searchbox" id="search" placeholder="Torrent search"><% end %>
                 </div>
             </div>
         </div>
