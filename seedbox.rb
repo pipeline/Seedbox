@@ -4,6 +4,7 @@ require 'rubygems'
 require 'sinatra'
 require 'erb'
 require 'json'
+require 'mail'
 require 'tvdb'
 require 'net/http'
 require 'digest/sha1'
@@ -14,7 +15,7 @@ enable :sessions
 
 before do
   path = @env['PATH_INFO']
-  if session[:user_id] == nil && path != '/user/login' && path != '/style.css' then
+  if session[:user_id] == nil && path != '/user/login' && path != '/style.css' && path != '/user/set_password' then
     redirect '/user/login'
   elsif session[:user_id] != nil then
     @user = User.get(session[:user_id])
@@ -90,6 +91,44 @@ post '/add_torrent' do
   url = params[:url]
   uri = URI("#{RUTORRENT_URL}php/addtorrent.php")
   res = Net::HTTP.post_form(uri, :url => url)
+end
+
+get '/settings' do
+  @users = User.all
+  erb :settings
+end
+
+get '/user/set_password' do
+  @user = User.first(:hashed_password => params[:code])
+  redirect '/user/login' and return if @user == nil
+  session[:user_id] = @user.id
+  @current_password = @user.hashed_password 
+  erb :change_password
+end
+
+post '/users/change_password' do
+  if (Digest::SHA1.hexdigest(params[:current_password]) == @user.hashed_password || params[:current_password] == @user.hashed_password) && params[:password] == params[:retype_password] then
+    @user.hashed_password = Digest::SHA1.hexdigest(params[:password])
+    @user.save
+  end
+  
+  redirect '/settings'
+end
+
+post '/users/add' do
+  password = generate_password
+  email = params[:email]
+  name = params[:name]
+  User.create(
+    :name => name,
+    :email => email,
+    :hashed_password => password,
+    :admin => false
+  )
+  
+  send_email(email, "Seedbox", "Hi #{name},<br>Welcome to the seedbox, <a href=\"http://localhost:4567/user/set_password?code=#{password}\">Click here</a> to set your password.<br><br>--Me")
+  
+  redirect '/settings'
 end
 
 get '/delete_torrent' do
@@ -206,3 +245,22 @@ def get_current_torrents
   return torrents
 end
 
+def generate_password(size=16)
+  s = ""
+  size.times { s << (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }
+  s
+end
+
+def send_email(address, subject, message)
+  m = Mail.new do
+    from 'Benjamin Kearns <benjamin.kearns@gmail.com>'
+    to address
+    subject subject
+    html_part do |h|
+      content_type 'text/html'
+      body message
+    end
+  end
+
+  m.deliver!
+end

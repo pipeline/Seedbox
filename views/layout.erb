@@ -9,8 +9,8 @@
     <body>
         <div id="headerRow">
             <div id="header-content">
-                <span id="title"><b>Seedbox</b></span>
-                <% if @user != nil %><span id="welcome-message">Hello <b>Benjamin</b> | <a href="#">Settings</a> | <a href="/user/logout">Logout</a><br><span id="last_login">Last login: 2nd December 2011</span></span><% end %>
+                <span id="title"><b><a href="/">Seedbox</a></b></span>
+                <% if @user != nil %><span id="welcome-message">Hello <b><%= @user.name %></b> | <a href="/settings">Settings</a> | <a href="/user/logout">Logout</a><!--br><span id="last_login">Last login: 2nd December 2011</span--></span><% end %>
             </div>
         </div>
         <div id="menuRow">
@@ -28,7 +28,6 @@
         
         <div id="content">
             <!--h1><%= @title %></h1-->
-            
             <%= yield %>
         </div>
 

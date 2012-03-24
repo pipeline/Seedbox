@@ -1,0 +1,22 @@
+<%= erb :change_password %>
+
+<% if @user.admin %>
+  <div class="block">
+    <h2>Users</h2>
+    <div class="block-content">
+      <table>
+        <% @users.each do |user| %>
+          <tr class="<%= cycle %>">
+            <td><%= user[:name] %></td>
+            <td style="width: 100%;"><%= user[:email] %></td>
+          </tr>
+        <% end %>
+      </table>
+      <form action="/users/add" method="post">
+        <input type="text" class="full_width_textbox" placeholder="Name" name="name">
+        <input type="text" class="full_width_textbox" placeholder="Email" name="email">
+        <input type="submit" value="Add">
+      </form>
+    </div>
+  </div>
+<% end %>
