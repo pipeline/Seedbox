@@ -1,0 +1,15 @@
+<div class="block">
+  <h2>Torrent search: <%= @search_query %></h2>
+  <div class="block-content">
+    <table>
+      <% @torrents.each do |torrent| %>
+        <tr class="<%= cycle %>">
+          <td style="width: 100%;"><%= torrent[:name] %></td>
+          <td><%= torrent[:size] / 1024 / 1024 %>MB</td>
+          <td><a href="/torrents/add_magnet?magnet=<%= torrent[:magnet] %>">Download</a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+

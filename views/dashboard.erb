@@ -1,8 +1,7 @@
 <div class="block">
   <h2>Torrent Status</h2>
-  <div class="block-content">
+  <div id="current_torrents" class="block-content">
     <%= erb :current_torrents %>
-    <input type="text" class="full_width_textbox" placeholder="Magnet Link" id="torrent_url"></input><div class="button-row"><a href="#" class="button" onclick="add_torrent(); return false;">Add</a></div>
   </div>
 </div>
 
@@ -32,4 +31,31 @@
     <%= erb :feature_requests %>
   </div>
 </div>
+
+<script type="text/javascript">
+  windowHasFocus = true;
+
+  $(window).blur(function(){
+    windowHasFocus = false;
+  });
+  $(window).focus(function(){
+    windowHasFocus = true;
+    refreshTorrentList();
+  });
+  
+  function refreshTorrentList() {
+    if(windowHasFocus) {
+      $.ajax({
+        type: "GET",
+        url: '/torrents/current',
+        success: function(result) {
+          $('#current_torrents')[0].innerHTML = result;
+          setTimeout("refreshTorrentList()", 5000);
+        }
+      });
+    }
+  }
+  
+  setTimeout("refreshTorrentList()", 5000);
+</script>
 

@@ -14,6 +14,11 @@ get '/torrents/add_magnet' do
   redirect '/'
 end
 
+get '/torrents/current' do
+  @current_torrents = get_current_torrents
+  erb :current_torrents, {:layout => false}
+end
+
 get '/delete_torrent' do
   hash = params[:hash]
   uri = URI("#{RUTORRENT_URL}")
