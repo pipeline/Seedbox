@@ -21,6 +21,10 @@ a {
   color: #85a000;
 }
 
+form {
+  margin-bottom: 0px;
+}
+
 #headerRow {
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#0e0f0f), to(#151717));
     background: -moz-linear-gradient(top, #0e0f0f, #151717);  

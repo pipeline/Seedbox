@@ -21,7 +21,7 @@
                         <li><a class="menu-unselected" href="info.html">Content</a></li>
                         <li><a class="menu-unselected" href="#">Torrents</a></li>
                     </ul-->
-                    <% if @user != nil %><input type="text" name="search" class="searchbox" id="search" placeholder="Torrent search"><% end %>
+                    <% if @user != nil %><form method="post" action="/torrents/search"><input type="text" name="search" class="searchbox" id="search" placeholder="Torrent search" <% if @search_query != nil %>value="<%= @search_query %>"<%end%>></form><% end %>
                 </div>
             </div>
         </div>
