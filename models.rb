@@ -68,6 +68,7 @@ class User
   property :name, String
   property :hashed_password, String
   property :admin, Boolean
+  property :credit_expires, Date
   
   has n, :feature_requests
   has n, :feature_request_votes

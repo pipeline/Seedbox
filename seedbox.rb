@@ -6,20 +6,26 @@ require 'erb'
 require 'json'
 require 'mail'
 require 'tvdb'
+require 'activemerchant'
 require 'net/http'
 require 'digest/sha1'
 require './config.rb'
 require './models.rb'
 require './torrents.rb'
+require './users.rb'
 
 enable :sessions
 
 before do
   path = @env['PATH_INFO']
-  if session[:user_id] == nil && path != '/user/login' && path != '/style.css' && path != '/user/set_password' then
+  if session[:user_id] == nil && path != '/user/login' && path != '/style.css' && path != '/user/set_password'
     redirect '/user/login'
-  elsif session[:user_id] != nil then
+  elsif session[:user_id] != nil
     @user = User.get(session[:user_id])
+  end
+  
+  if @user != nil && (@user.credit_expires == nil || @user.credit_expires < Date.today) && path != '/users/credit_expired' && path != '/users/checkout' && path != '/users/confirm_payment'
+    redirect '/users/credit_expired'
   end
 end
 
@@ -52,27 +58,6 @@ get '/report_files' do
   end
 end
 
-get '/user/login' do
-  @title = 'Login'
-  erb :login
-end
-
-post '/user/login' do
-  @title = 'Login'
-  user = User.first(:email => params[:email])
-  if user.hashed_password == Digest::SHA1.hexdigest(params[:password])
-    session[:user_id] = user.id
-    redirect '/'
-  else
-    erb :login
-  end
-end
-
-get '/user/logout' do
-  session[:user_id] = nil
-  redirect '/user/login'
-end
-
 post '/add_feature_request' do
   description = params[:description]
   
@@ -91,39 +76,6 @@ end
 get '/settings' do
   @users = User.all
   erb :settings
-end
-
-get '/user/set_password' do
-  @user = User.first(:hashed_password => params[:code])
-  redirect '/user/login' and return if @user == nil
-  session[:user_id] = @user.id
-  @current_password = @user.hashed_password 
-  erb :change_password
-end
-
-post '/users/change_password' do
-  if (Digest::SHA1.hexdigest(params[:current_password]) == @user.hashed_password || params[:current_password] == @user.hashed_password) && params[:password] == params[:retype_password] then
-    @user.hashed_password = Digest::SHA1.hexdigest(params[:password])
-    @user.save
-  end
-  
-  redirect '/settings'
-end
-
-post '/users/add' do
-  password = generate_password
-  email = params[:email]
-  name = params[:name]
-  User.create(
-    :name => name,
-    :email => email,
-    :hashed_password => password,
-    :admin => false
-  )
-  
-  send_email(email, "Seedbox", "Hi #{name},<br>Welcome to the seedbox, <a href=\"http://localhost:4567/user/set_password?code=#{password}\">Click here</a> to set your password.<br><br>--Me")
-  
-  redirect '/settings'
 end
 
 get '/delete_feature_request' do
@@ -207,22 +159,3 @@ def download_tvdb_file(filename)
   }
 end
 
-def generate_password(size=16)
-  s = ""
-  size.times { s << (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }
-  s
-end
-
-def send_email(address, subject, message)
-  m = Mail.new do
-    from 'Benjamin Kearns <benjamin.kearns@gmail.com>'
-    to address
-    subject subject
-    html_part do |h|
-      content_type 'text/html'
-      body message
-    end
-  end
-
-  m.deliver!
-end
