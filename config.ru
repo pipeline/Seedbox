@@ -1,4 +1,4 @@
-require 'app'
+require 'seedbox'
 
 set :environment, ENV['RACK_ENV'].to_sym
 set :app_file,     'seedbox.rb'
