@@ -21,17 +21,17 @@ end
 
 get '/delete_torrent' do
   hash = params[:hash]
-  uri = URI("#{RUTORRENT_URL}")
+  uri = URI("#{ENV['RUTORRENT_URL']}")
   http = Net::HTTP.new(uri.host, uri.port)
   post = Net::HTTP::Post.new("#{uri.path}plugins/httprpc/action.php")
-  post.basic_auth RUTORRENT_USERNAME, RUTORRENT_PASSWORD
+  post.basic_auth ENV['RUTORRENT_USERNAME'], ENV['RUTORRENT_PASSWORD']
   post.body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodCall><methodName>system.multicall</methodName><params><param><value><array><data><value><struct><member><name>methodName</name><value><string>d.set_custom5</string></value></member><member><name>params</name><value><array><data><value><string>#{hash}</string></value><value><string>1</string></value></data></array></value></member></struct></value><value><struct><member><name>methodName</name><value><string>d.delete_tied</string></value></member><member><name>params</name><value><array><data><value><string>#{hash}</string></value></data></array></value></member></struct></value><value><struct><member><name>methodName</name><value><string>d.erase</string></value></member><member><name>params</name><value><array><data><value><string>#{hash}</string></value></data></array></value></member></struct></value></data></array></value></param></params></methodCall>"
   http.request(post)
   redirect '/'
 end
 
 def add_torrent(url)
-  uri = URI("#{RUTORRENT_URL}php/addtorrent.php")
+  uri = URI("#{ENV['RUTORRENT_URL']}php/addtorrent.php")
   puts "Adding torrent: #{url}"
   res = Net::HTTP.post_form(uri, :url => url)
   puts "GOT: "
@@ -39,7 +39,7 @@ def add_torrent(url)
 end
 
 def get_current_torrents
-  uri = URI("#{RUTORRENT_URL}plugins/httprpc/action.php")
+  uri = URI("#{ENV['RUTORRENT_URL']}plugins/httprpc/action.php")
   res = Net::HTTP.post_form(uri, :mode => 'list')
 
   torrents = []
@@ -53,7 +53,7 @@ def get_current_torrents
       :percent => ((values[8].to_f / values[5].to_f) * 100.0).to_i,
       :hash => hash,
       :done => (values[8] == values[5]),
-      :download_url => "#{FTP_URL}#{values[25].gsub(FTP_HOME, "")}"
+      :download_url => "#{ENV['FTP_URL']}#{values[25].gsub(ENV['FTP_HOME'], "")}"
     }
   }
 

@@ -50,7 +50,7 @@ post '/users/add' do
     :admin => false
   )
   
-  send_email(email, "Seedbox", "Hi #{name},<br>Welcome to the seedbox, <a href=\"http://#{SITE_DOMAIN}/user/set_password?code=#{password}\">Click here</a> to set your password.<br><br>--Me")
+  send_email(email, "Seedbox", "Hi #{name},<br>Welcome to the seedbox, <a href=\"http://#{ENV['SITE_DOMAIN']}/user/set_password?code=#{password}\">Click here</a> to set your password.<br><br>--Me")
   
   redirect '/settings'
 end
@@ -62,8 +62,8 @@ end
 get '/users/checkout' do
   setup_response = gateway.setup_purchase(1000,
     #:ip                => '127.0.0.1',
-    :return_url        => "http://#{SITE_DOMAIN}/users/confirm_payment",
-    :cancel_return_url => "http://#{SITE_DOMAIN}/"
+    :return_url        => "http://#{ENV['SITE_DOMAIN']}/users/confirm_payment",
+    :cancel_return_url => "http://#{ENV['SITE_DOMAIN']}/"
   )
 
   pp setup_response.params
@@ -115,8 +115,16 @@ def generate_password(size=16)
 end
 
 def send_email(address, subject, message)
+  Mail.defaults do
+    delivery_method :smtp, :address => ENV['SMTP_SERVER'],
+                       :port => ENV['SMTP_PORT'],
+                       :user_name => ENV['SMTP_USERNAME'],
+                       :password => ENV['SMTP_PASSWORD'],
+                       :enable_ssl => ENV['SMTP_SSL']
+  end
+
   m = Mail.new do
-    from "#{ADMIN_NAME} <#{ADMIN_EMAIL}>"
+    from "#{ENV['ADMIN_NAME']} <#{ENV['ADMIN_EMAIL']}>"
     to address
     subject subject
     html_part do |h|
@@ -130,9 +138,9 @@ end
 
 def gateway
   @gateway ||= PaypalExpressGateway.new(
-    :login => PAYPAL_LOGIN,
-    :password => PAYPAL_PASSWORD,
-    :signature => PAYPAL_SIGNATURE
+    :login => ENV['PAYPAL_LOGIN'],
+    :password => ENV['PAYPAL_PASSWORD'],
+    :signature => ENV['PAYPAL_SIGNATURE']
   )
 end
 
