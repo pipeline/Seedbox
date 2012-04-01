@@ -72,6 +72,7 @@ get '/users/checkout' do
 end
 
 get '/users/confirm_payment' do
+  puts "Confirming payment..."
   puts "TOKEN NULL" and redirect '/' and return unless params[:token]
   
 #  details_response = gateway.details_for(params[:token])
@@ -97,6 +98,8 @@ get '/users/confirm_payment' do
     redirect '/'
     return
   end
+
+  puts "Saving new user credit."
   
   if @user.credit_expires == nil || @user.credit_expires < Date.today
     @user.credit_expires = Date.today.next_month
