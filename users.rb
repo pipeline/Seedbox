@@ -73,7 +73,7 @@ end
 
 get '/users/confirm_payment' do
   puts "Confirming payment..."
-  puts "TOKEN NULL" and redirect '/' and return unless params[:token]
+  #puts "TOKEN NULL" and redirect '/' and return unless params[:token]
   
 #  details_response = gateway.details_for(params[:token])
   
