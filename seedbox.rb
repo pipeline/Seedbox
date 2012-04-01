@@ -23,7 +23,7 @@ before do
     @user = User.get(session[:user_id])
   end
   
-  if @user != nil && (@user.credit_expires == nil || @user.credit_expires < Date.today) && @user.admin != true && path != '/users/credit_expired' && path != '/users/checkout' && path != '/users/confirm_payment' && path != '/user/set_password' && path != '/users/change_password'
+  if @user != nil && (@user.credit_expires == nil || @user.credit_expires < Date.today) && @user.admin != true && path != '/users/credit_expired' && path != '/users/checkout' && path != '/users/confirm_payment' && path != '/user/set_password' && path != '/users/change_password' && path != '/user/logout'
     redirect '/users/credit_expired'
   end
 end
