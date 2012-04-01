@@ -1,4 +1,3 @@
-ActiveMerchant::Billing::Base.mode = :test
 include ActiveMerchant::Billing
 
 get '/user/login' do
